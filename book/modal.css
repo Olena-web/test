@@ -1,0 +1,174 @@
+.modal {
+	display: none;
+  position: fixed;
+	z-index: 100;
+	left: 0;
+	top: 0;
+	width: 100%;
+	height: 100%;
+	background-color: rgba(0,0,0,0.5);
+	opacity: 0;
+	visibility: hidden;
+	transform: scale(1.1);
+	transition: visibility 0s linear 0.25s, opacity 0.25s, transform 0.25s;
+}
+
+.modal-content {
+	position: absolute;
+	top: 28%;
+	left: 38%;
+	transition: translate(-50%, -50%);
+	background-color: white;
+	padding: 1rem 1.5rem;
+	width: 24rem;
+	border-radius: 0.5rem;
+	font-size: 24px;
+}
+
+.close-button {
+	float: right;
+	width: 1.5rem;
+	line-height: 1.5rem;
+	text-align: center;
+	cursor: pointer;
+	border-radius: 0.25rem;
+	background-color: lightgray;
+}
+
+.close-button:hover {
+	background-color: darkgray;
+}
+
+.show-modal {
+	display: block;
+	opacity: 1;
+	visibility: visible;
+	transform: scale(1.0);
+	transition: visibility 0s linear 0s, opacity 0.25s 0s,transform 0.25s; 
+}
+
+input[type="checkbox"] {
+  position: absolute;
+  opacity: 0;
+}
+label {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  cursor: pointer;
+  opacity: 0.8;
+}
+label:hover {
+  opacity: 1;
+}
+
+/* Normal Track */
+input[type="checkbox"].btn-switch + div {
+  vertical-align: middle;
+  width: 40px;
+  height: 20px;
+  border: 1px solid rgba(0, 0, 0, 0.4);
+  border-radius: 999px;
+  background-color: rgba(0, 0, 0, 0.1);
+  transition-duration: 0.4s;
+  -webkit-transition-duration: 0.4s;
+  transition-property: background-color, box-shadow;
+  -webkit-transition-property: background-color, box-shadow;
+  box-shadow: inset 0 0 0 0px rgba(0, 0, 0, 0.4);
+  margin: 15px 1.2em 15px 2.5em;
+}
+
+/* Checked Track (Blue) */
+input[type="checkbox"].btn-switch:checked + div {
+  width: 40px;
+  background-position: 0 0;
+  background-color: var(--card-level0);
+  border: 1px solid var(--card-level0);
+  box-shadow: inset 0 0 0 10px var(--card-level0);
+}
+
+/* Tiny Track */
+input[type="checkbox"].tinyswitch.btn-switch + div {
+  width: 34px;
+  height: 18px;
+}
+
+/* Big Track */
+input[type="checkbox"].bigswitch.btn-switch + div {
+  width: 50px;
+  height: 25px;
+}
+
+/* Green Track */
+input[type="checkbox"].green.btn-switch:checked + div {
+  background-color: var(--card-level0);
+  border: 1px solid var(--card-level0);
+  box-shadow: inset 0 0 0 10px var(--card-level0);
+}
+
+/* Normal Knob */
+input[type="checkbox"].btn-switch + div > div {
+  float: left;
+  width: 18px;
+  height: 18px;
+  border-radius: inherit;
+  background: #ffffff;
+  transition-timing-function: cubic-bezier(0.54, 1.85, 0.5, 1);
+  transition-duration: 0.4s;
+  transition-property: transform, background-color, box-shadow;
+  -webkit-transition-timing-function: cubic-bezier(0.54, 1.85, 0.5, 1);
+  -webkit-transition-duration: 0.4s;
+  -webkit-transition-property: transform, background-color, box-shadow;
+  -moz-transition-timing-function: cubic-bezier(0.54, 1.85, 0.5, 1);
+  -moz-transition-duration: 0.4s;
+  -moz-transition-property: transform, background-color;
+  box-shadow: 0px 2px 5px rgba(0, 0, 0, 0.3), 0px 0px 0 1px rgba(0, 0, 0, 0.4);
+  pointer-events: none;
+  margin-top: 1px;
+  margin-left: 1px;
+}
+
+/* Checked Knob (Blue Style) */
+input[type="checkbox"].btn-switch:checked + div > div {
+  transform: translate3d(20px, 0, 0);
+  transform: translate3d(20px, 0, 0);
+  -webkit-transform: translate3d(20px, 0, 0);
+  -moz-transform: translate3d(20px, 0, 0);
+  background-color: #ffffff;
+  box-shadow: 0px 2px 5px rgba(0, 0, 0, 0.3), 0px 0px 0 1px var(--card-level0);
+}
+
+/* Tiny Knob */
+input[type="checkbox"].tinyswitch.btn-switch + div > div {
+  width: 16px;
+  height: 16px;
+  margin-top: 1px;
+}
+
+/* Checked Tiny Knob (Blue Style) */
+input[type="checkbox"].tinyswitch.btn-switch:checked + div > div {
+  transform: translate3d(16px, 0, 0);
+  -webkit-transform: translate3d(16px, 0, 0);
+  -moz-transform: translate3d(16px, 0, 0);
+  box-shadow: 0px 2px 5px rgba(0, 0, 0, 0.3), 0px 0px 0 1px var(--card-level0);
+}
+
+/* Big Knob */
+input[type="checkbox"].bigswitch.btn-switch + div > div {
+  width: 23px;
+  height: 23px;
+  margin-top: 1px;
+}
+
+/* Checked Big Knob (Blue Style) */
+input[type="checkbox"].bigswitch.btn-switch:checked + div > div {
+  transform: translate3d(25px, 0, 0);
+  -webkit-transform: translate3d(25px, 0, 0);
+  -moz-transform: translate3d(16px, 0, 0);
+  box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.3), 0px 0px 0 1px var(--card-level0);
+}
+
+/* Green Knob */
+input[type="checkbox"].green.btn-switch:checked + div > div {
+  box-shadow: 0px 2px 5px rgba(0, 0, 0, 0.3), 0 0 0 1px var(--card-level0);
+}

@@ -1,6 +1,8 @@
 import { setItemToLocalStorage, getItemFromLocalStorage } from '../js/localStorage';
 import { firstPage } from './paginationBook';
-import { getWord, createUserWord, getUserWord, getUserWordsAll, deleteUserWord } from '../js/api';
+import {
+  getWord, createUserWord, getUserWord, getUserWordsAll, deleteUserWord,
+} from '../js/api';
 import { CardElement } from '../card/cardElement';
 import { UserWordParameters } from '../js/types';
 
@@ -8,6 +10,8 @@ export const deletedCards: Array<string> = [];
 export const difficultWords: Array<string> = [];
 
 const myId: string = getItemFromLocalStorage('id');
+const difficultBtn = document.querySelector('difficult');
+const deleteBtn = document.querySelector('delete');
 
 export function removeCard() {
   document.body.addEventListener('click', (e) => {
@@ -24,35 +28,34 @@ export function removeCard() {
 }
 
 export function difficultWord() {
-  document.body.addEventListener('click', async (e) => {
+  document.body.addEventListener('click', async (e):Promise< void> => {
     if (e.target) {
       if ((e.target as HTMLElement).classList.contains('difficult')) {
         const wordId = (e.target as HTMLElement).id.split('difficult')[1];
         const word = document.getElementById(`${wordId}`);
-        console.log(wordId);
         if (word) word.classList.add('difficult-word');
         difficultWords.push(wordId);
         setItemToLocalStorage('difficultWords', JSON.stringify(difficultWords));
-        // const difficultWordId: string = (JSON.parse(getItemFromLocalStorage('difficultWords')));
-
-        
         const body: UserWordParameters = {
           difficulty: 'difficult-word',
           optional: { testFieldString: 'test', testFieldBoolean: true },
-          // word: {
-          //   difficulty: 'difficult',
-          //   optional: { testFieldString: 'test', testFieldBoolean: true },
-          // },
         };
-        
-        const newDifficultWord = await createUserWord(myId, wordId, body);
-        console.log(wordId);
-        return newDifficultWord;
+        await createUserWord(myId, wordId, body);
       }
     }
   });
 }
-
+export async function removeDifficultWord() {
+  document.body.addEventListener('click', async (e) => {
+    if (e.target) {
+      if ((e.target as HTMLElement).classList.contains('delete')) {
+        const id = (e.target as HTMLElement).id.split('delete')[1];
+        deletedCards.push(id);
+        await deleteUserWord(myId, id);
+      }
+    }
+  });
+}
 export async function renderDifficultPage() {
   document.body.addEventListener('click', async (e) => {
     const cardsOnPage = document.querySelector('.book-page');
@@ -60,35 +63,17 @@ export async function renderDifficultPage() {
       const id = (e.target as HTMLElement).id.split('level')[1];
       if (id === '6') {
         if (cardsOnPage) cardsOnPage.innerHTML = '';
-          const data = await getUserWordsAll(myId).then((id)=>{
-            id.forEach(async (item) => {
-                console.log(item.wordId)
-              const difWord = await getWord(item.wordId);
-              const cardOnPage = new CardElement(difWord).renderCard();
-              if (cardsOnPage) cardsOnPage.appendChild(cardOnPage);
-            })
-          });
-          };
-        }
-        return cardsOnPage;
-      }
-     
-  )
-  removeDifficultWord();
-}
-
-async function removeDifficultWord() {
-  document.body.addEventListener('click', async (e) => {
-    if (e.target) {
-      if ((e.target as HTMLElement).classList.contains('delete')) {
-        const id = (e.target as HTMLElement).id.split('delete')[1];
-        //const cardToDelete = document.getElementById(`${id}`);
-        deletedCards.push(id);
-        await deleteUserWord(myId,id);
+        const diffWordsId = await getUserWordsAll(myId);
+        diffWordsId.forEach(async (item) => {
+          const diffWord = await getWord(item.wordId);
+          const cardOnPage = new CardElement(diffWord).renderCard();
+          if (difficultBtn) difficultBtn.remove();
+          if (deleteBtn) deleteBtn.innerHTML = 'non difficult'
+          if (cardsOnPage) cardsOnPage.appendChild(cardOnPage);
+        });
       }
     }
   });
-  
 }
 
 export default { removeCard, difficultWord, renderDifficultPage };

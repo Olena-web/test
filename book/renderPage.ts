@@ -4,7 +4,7 @@ import { settings } from '../book/svg';
 import {
   firstPage, currentPage, totalPages, prevPage, nextPage, changeLevel,
 } from '../book/paginationBook';
-import { removeCard, difficultWord, renderDifficultPage } from './removeCard';
+import { removeCard, difficultWord, removeDifficultWord, renderDifficultPage } from './difficultPage';
 
 export const Group = 0;
 
@@ -63,7 +63,8 @@ export async function renderPage(group: number, page: number) : Promise<HTMLElem
         } else {
           nextButton.classList.remove('opacity');
         }
-        counter.innerHTML = `${currentPage + 1} / ${totalPages}`;
+        
+        counter.innerHTML = `${currentPage + 2} / ${totalPages}`;
         nextPage();
       });
     }
@@ -83,6 +84,7 @@ export async function renderPage(group: number, page: number) : Promise<HTMLElem
   });
   removeCard();
   difficultWord();
+  removeDifficultWord();
 
   return Page;
 }
@@ -103,8 +105,8 @@ export function createAside() {
   <div id="modal" class="modal">
     <div class = modal-content>
       <button class="close-button">&times;</button>
-      <div class="switch">
-      <div class="switch-item"></div>
+      <div class="switch show-translation">
+      <div class="switch-item show-translation"></div>
       <label>
         <span class="show-translation">show translation</span>
         <input
@@ -115,10 +117,10 @@ export function createAside() {
         <div><div></div></div
       ></label>
     </div>
-    <div class="switch">
+    <div class="switch show-buttons">
       <div class="switch-item"></div>
       <label>
-        <span class="show-buttons">show button for words</span>
+        <span >show button for words</span>
         <input
           type="checkbox"
           id="difficult"

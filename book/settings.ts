@@ -1,7 +1,7 @@
 export function addModal() {
-  const modal = document.querySelector('.modal');
-  const modalContent = document.querySelector('.modal-content');
-  const settingsBtn = document.querySelector('.settings');
+  const modal = document.querySelector<HTMLDivElement>('.modal');
+  const modalContent = document.querySelector<HTMLDivElement>('.modal-content');
+  const settingsBtn = document.querySelector<HTMLButtonElement>('.settings');
   const closeBtn = document.querySelector<HTMLButtonElement>('.close-button');
 
   const saveBtn = document.querySelector<HTMLButtonElement>('.save');
@@ -57,37 +57,87 @@ export function toggleTranslate(): void {
   const translateWord = document.querySelectorAll('.translate');
   const translateExample = document.querySelectorAll('.textExampleTranslate');
 
-  let isTranslate = false;
-
+  // let isTranslate = false;
   translateMeaning.forEach((element) => {
-    if (!isTranslate) {
-      element.classList.add('hide');
-      isTranslate = false;
-    } else {
-      element.classList.remove('hide');
-      isTranslate = true;
-    }
+    element.classList.toggle('hide');
   });
   translateWord.forEach((element) => {
-    if (!isTranslate) {
-      element.classList.add('hide');
-      isTranslate = false;
-    } else {
-      element.classList.remove('hide');
-      isTranslate = true;
-    }
+    element.classList.toggle('hide');
   });
   translateExample.forEach((element) => {
-    if (!isTranslate) {
+    element.classList.toggle('hide');
+  });
+
+  const showTranslation = document.querySelectorAll('.show-translation');
+  if (showTranslation) {
+    showTranslation.forEach((translate) => {
+      translate.addEventListener('click', () => {
+        toggleTranslate();
+      });
+    });
+  }
+}
+
+export function toggleButtons():void {
+  const showButtons = document.querySelectorAll('.show-buttons');
+  const deleteBtns = document.querySelectorAll('.delete');
+  const difficultBtns = document.querySelectorAll('.difficult');
+  const correctBtns = document.querySelectorAll('.correct');
+  const incorrectBtns = document.querySelectorAll('.incorrect');
+  let isShowButtons = false;
+
+  function removeButtons() {
+    deleteBtns.forEach((element) => {
       element.classList.add('hide');
-      isTranslate = false;
-    } else {
+    });
+    difficultBtns.forEach((element) => {
+      element.classList.add('hide');
+    });
+    correctBtns.forEach((element) => {
+      element.classList.add('hide');
+    });
+    incorrectBtns.forEach((element) => {
+      element.classList.add('hide');
+    });
+  }
+
+  // removeButtons();
+  function addButtons() {
+    deleteBtns.forEach((element) => {
       element.classList.remove('hide');
-      isTranslate = true;
-    }
-  });
-  const showTranslation = document.querySelector<HTMLElement>('.show-translation');
-  showTranslation?.addEventListener('click', () => {
-    toggleTranslate();
-  });
+    });
+    difficultBtns.forEach((element) => {
+      element.classList.remove('hide');
+    });
+    correctBtns.forEach((element) => {
+      element.classList.remove('hide');
+    });
+    incorrectBtns.forEach((element) => {
+      element.classList.remove('hide');
+    });
+  }
+  // addButtons();
+
+  // if (!isShowButtons) {
+  //   removeButtons();
+  //   isShowButtons = true;
+  // } else if (isShowButtons) {
+  //   addButtons();
+  //   isShowButtons = false;
+  // }
+
+  if (showButtons) {
+    showButtons.forEach((button) => {
+      button.addEventListener('click', () => {
+        if (!isShowButtons) {
+          removeButtons();
+          isShowButtons = true;
+        } else if (isShowButtons) {
+          addButtons();
+          isShowButtons = false;
+        }
+        toggleButtons();
+      });
+    });
+  }
 }
