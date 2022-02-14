@@ -2,29 +2,36 @@
   display: flex;  
   flex-direction: column;
   flex-wrap: wrap;
-  align-items:flex-start;
   justify-content: flex-start;
 }
 
+.wrapper-book {
+  display:flex;
+  height: 77vh;
+  overflow-y: scroll;
+}
+
 .book {
+  margin-left: 13em;
 	padding: 10px;
 	display: flex;
 	flex-direction: column;
 	align-items: center;
 	align-content: space-around;
 	gap: 25px;
-	overflow-y: scroll;
 }
 .book-page {
-  margin: 0 auto;
-  margin-left: 5em;
-	padding: 10px;
-	display: flex;
-	flex-direction: row;
-	flex-wrap: wrap;
-	gap: 25px;
+  font-family: 'Josefin Sans', sans-serif;
+  margin: 0;
+  /* margin-top: 3em; */
+  display: grid;
+	grid-template-columns: repeat(2, 1fr);
+  row-gap: 3em;
+	align-items:center;
+  justify-content: space-around;
 }
 .pagination {
+  /* position: fixed; */
   width: 25em;
   display: flex;
   justify-content: space-between;
@@ -51,8 +58,8 @@
 }
 .levels {
   display: flex;
-  position: relative;
-  left: 0px;
+  position: fixed;
+  left: 40px;
   flex-direction: column;
   gap: 1.2em;
 }
@@ -124,5 +131,17 @@
 }
 .difficult-word{
   border: 2px red dotted;
+}
+.pageup {
+  /* display: none; */
+  position: fixed;
+  bottom: 118px;
+  right: 32px;
+  width: 40px;
+  height: 40px;
+  z-index: 10;
+}
+a.pageup:hover svg path {
+  fill: var(--gold-color);
 }
 

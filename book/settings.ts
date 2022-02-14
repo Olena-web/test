@@ -2,6 +2,7 @@ export function addModal() {
   const modal = document.querySelector<HTMLDivElement>('.modal');
   const modalContent = document.querySelector<HTMLDivElement>('.modal-content');
   const settingsBtn = document.querySelector<HTMLButtonElement>('.settings');
+  
   const closeBtn = document.querySelector<HTMLButtonElement>('.close-button');
 
   const saveBtn = document.querySelector<HTMLButtonElement>('.save');
@@ -12,7 +13,7 @@ export function addModal() {
   function removeModal(): void {
     modal?.classList.remove('show-modal');
   }
-
+  
   settingsBtn?.addEventListener('click', toggleModal);
   closeBtn?.addEventListener('click', removeModal);
   // document.addEventListener('click', (e) => {

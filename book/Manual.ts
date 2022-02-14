@@ -3,6 +3,8 @@ import { renderPage, createAside, Group } from './renderPage';
 import { currentPage } from './paginationBook';
 import { addModal, toggleTranslate, toggleButtons } from './settings';
 import { renderDifficultPage } from './difficultPage';
+import { getItemFromLocalStorage } from '../js/localStorage';
+
 
 export class Manual extends AbstractView {
   constructor() {
@@ -21,7 +23,23 @@ export class Manual extends AbstractView {
     toggleTranslate();
     toggleButtons();
     renderDifficultPage();
-    return renderPage(Group, currentPage);
+    const currentPageUser = getItemFromLocalStorage('currentPage');
+    const userLevel = +currentPageUser.charAt(1);
+    const userPage = +currentPageUser.charAt(3)
+    document.addEventListener('onload', async ()=>{
+      //getItemFromLocalStorage('currentPage');
+      if (getItemFromLocalStorage('currentPage')){
+      
+      if (currentPageUser){
+        renderPage(userLevel, userPage)}
+    } else {
+      return renderPage(Group, currentPage);
+
+    }
+  
+  })
+
+    return renderPage(userLevel, userPage);
   }
 }
 export default Manual;
