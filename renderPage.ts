@@ -1,13 +1,17 @@
-import { getWords, getUserLearnedWords } from '../js/api';
-import { CardElement } from '../card/cardElement';
-import { settings } from '../book/svg';
-import { firstPage, currentPage, totalPages, prevPage, nextPage, changeLevel } from '../book/paginationBook';
+/* eslint-disable max-len */
+/* eslint-disable no-underscore-dangle */
+import {
+  getWords, getUserLearnedWords, getUserDifficultWords, getUserWordsAll,
+} from '../js/api';
+import { CardElement, myId } from '../card/cardElement';
+import { settings, sprintIcon, callIcon } from '../book/svg';
+import {
+  firstPage, currentPage, totalPages, prevPage, nextPage, changeLevel,
+} from '../book/paginationBook';
 import { difficultWord, removeDifficultWord } from './difficultPage';
 import { pageUp } from './svg';
 import { getItemFromLocalStorage } from '../js/localStorage';
 import { learnedWord } from './learnedWords';
-import { sprintIcon, callIcon } from '../book/svg';
-import { myId } from '../card/cardElement';
 
 export const Group = 0;
 
@@ -61,7 +65,6 @@ export function createAside() {
   difficultLevel.innerHTML = 'Difficult words';
   difficultLevel.classList.add('hide');
   aside.appendChild(difficultLevel);
-  const myId: string = getItemFromLocalStorage('id');
   if (myId) {
     difficultLevel.classList.remove('hide');
   }
@@ -78,7 +81,7 @@ export function createAside() {
   callButton.classList.add('call-btn');
   callButton.setAttribute('id', 'call');
   callButton.innerHTML = `${callIcon}`;
-  aside.appendChild(callButton);*/
+  aside.appendChild(callButton); */
 
   /**/
   const callButton = document.createElement('div');
@@ -130,79 +133,63 @@ export async function renderPage(group: number, page: number): Promise<HTMLEleme
   Page.appendChild(cardsOnPage);
   wrapperBook.appendChild(Page);
 
-  
-  const learnedWords = await getUserLearnedWords(myId);
-  const dataLearnedWords = learnedWords[0].paginatedResults;
   const data = await getWords(group, page);
-  if (dataLearnedWords) {
-  console.log(dataLearnedWords[0]._id, data[0].id)
 
-   data.filter((a) => dataLearnedWords[0]._id?.indexOf(a.id)=== 1);
-   console.log(data.filter((a) => dataLearnedWords[0]._id?.indexOf(a.id)=== 1)) }
-  // var cache;
-  // if (dataLearnedWords) {
+  if (myId) {
 
-  //   const ln1 = dataLearnedWords.length;
-  //   const ln2 = data.length;
-         
-  //   for (let i = 0; i < ln1; i+=1) {
-  //     cache = dataLearnedWords[i]._id;
-  //     //console.log(cache)
-  //     for (let j = 0; j < ln2; ++j) {
-  //       //console.log(data[j].id)
-  //       if (cache === data[j].id) {
-          
-  //         console.log('найдено совпадение: ' + cache);
-  //         //break;
-  //       }
-  //     }
-  //   }
+    data.forEach((element) => {
+      const cardOnPage = new CardElement(element).renderCard();
+      if (cardsOnPage) cardsOnPage.appendChild(cardOnPage);
+    });
+    const difficultWords = await getUserDifficultWords(myId);
+    const dataDifficultWords = difficultWords[0].paginatedResults;
 
+    const learnedWords = await getUserLearnedWords(myId);
+    const dataLearnedWords = learnedWords[0].paginatedResults;
+    console.log(learnedWords);
 
-  // }
+    // const filterLearned = data.filter((e) => dataLearnedWords?.findIndex((i) => i._id !== e.id) === -1);
+    // const filterDifficult = data.filter((e) => dataDifficultWords?.findIndex((i) => i._id !== e.id) === -1);
+    // // const filterNonLearned = data.filter((e) => dataLearnedWords?.findIndex((i) => i._id === e.id));
+    // const filterNonDifficult = data.filter((e) => dataDifficultWords?.findIndex((i) => i._id === e.id));
+    // console.log(filterLearned);
+    // console.log(learnedWords);
 
-  if (dataLearnedWords) 
-   dataLearnedWords.forEach(async (item) => {
-    const  id = item._id;
-   
-    
-   //console.log(data);
-   data.map((word) => {
-    // console.log(word.id);
-    const cardOnPage = new CardElement(word).renderCard();
-    id === word.id ? cardOnPage.classList.add('opacity'):cardOnPage.classList.remove('opacity');
-    if (cardsOnPage) cardsOnPage.appendChild(cardOnPage);
-  })
-  //   dataLearnedWords.map((word) => {
-  //    const cardOnPage = new CardElement(data).renderCard();
-  //    if (cardsOnPage){
-  //    word._id === data.id ? cardOnPage.classList.add('opacity'):cardOnPage.classList.remove('opacity')
-  //    cardOnPage.classList.add('opacity');
-  //    if (cardsOnPage) cardsOnPage.appendChild(cardOnPage);}
-   })
-//    )
-
-// }
-//}
-
-  
-
-  document.addEventListener('onload', async ()=>{
-    //getItemFromLocalStorage('currentPage');
-    if (getItemFromLocalStorage('currentPage')){
-    const currentPageUser = getItemFromLocalStorage('currentPage');
-    const userLevel = +currentPageUser.charAt(1);
-    const userPage = +currentPageUser.charAt(3)
-    if (currentPageUser){
-      renderPage(userLevel, userPage)}
-  }}
-  )
-    
-    // const data = await getWords(group, page);
-    // data.forEach((element) => {
-    //   const cardOnPage = new CardElement(element).renderCard();
+    // filterDifficult.forEach((card) => {
+    //   const cardOnPage = new CardElement(card).renderCard();
     //   if (cardsOnPage) cardsOnPage.appendChild(cardOnPage);
+    //   cardOnPage.classList.add('difficult-word');
+    //   return cardsOnPage;
     // });
+
+    // filterLearned.forEach((card) => {
+    //   const cardOnPage = new CardElement(card).renderCard();
+    //   if (cardsOnPage) cardsOnPage.appendChild(cardOnPage);
+    //   cardOnPage.classList.add('opacity');
+    //   return cardsOnPage;
+    // });
+    // filterNonDifficult.forEach((card) => {
+    //   const cardOnPage = new CardElement(card).renderCard();
+    //   if (cardsOnPage) cardsOnPage.appendChild(cardOnPage);
+    //   return cardsOnPage;
+    // });
+  } else {
+    data.forEach((element) => {
+      const cardOnPage = new CardElement(element).renderCard();
+      if (cardsOnPage) cardsOnPage.appendChild(cardOnPage);
+    });
+  }
+  document.addEventListener('onload', async () => {
+    if (getItemFromLocalStorage('currentPage')) {
+      const currentPageUser = getItemFromLocalStorage('currentPage');
+      const userLevel = +currentPageUser.charAt(1);
+      const userPage = +currentPageUser.charAt(3);
+      if (currentPageUser) {
+        renderPage(userLevel, userPage);
+      }
+    }
+  });
+
   function changePages() {
     if (prevButton) {
       prevButton.addEventListener('click', () => {
@@ -230,8 +217,8 @@ export async function renderPage(group: number, page: number): Promise<HTMLEleme
   }
   changeLevel();
   changePages();
-  //addModal();
-  
+  // addModal();
+
   document.body.addEventListener('click', (e) => {
     if (e.target) {
       if ((e.target as HTMLElement).classList.contains('level')) {
