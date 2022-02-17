@@ -1,7 +1,7 @@
 /* eslint-disable max-len */
 /* eslint-disable no-underscore-dangle */
 import {
-  getWords, getUserLearnedWords, getUserDifficultWords, getUserWordsAll,
+  getWords, getUserLearnedWords, getUserDifficultWords, getUserWordsAll, getUserWord
 } from '../js/api';
 import { CardElement, myId } from '../card/cardElement';
 import { settings, sprintIcon, callIcon } from '../book/svg';
@@ -133,52 +133,68 @@ export async function renderPage(group: number, page: number): Promise<HTMLEleme
   Page.appendChild(cardsOnPage);
   wrapperBook.appendChild(Page);
 
+  
+
   const data = await getWords(group, page);
 
   if (myId) {
 
-    data.forEach((element) => {
-      const cardOnPage = new CardElement(element).renderCard();
-      if (cardsOnPage) cardsOnPage.appendChild(cardOnPage);
-    });
+    // data.forEach((element) => {
+    //   const cardOnPage = new CardElement(element).renderCard();
+    //   if (cardsOnPage) cardsOnPage.appendChild(cardOnPage);
+    // });
     const difficultWords = await getUserDifficultWords(myId);
     const dataDifficultWords = difficultWords[0].paginatedResults;
 
     const learnedWords = await getUserLearnedWords(myId);
     const dataLearnedWords = learnedWords[0].paginatedResults;
-    console.log(learnedWords);
+    //console.log(dataLearnedWords);
 
-    // const filterLearned = data.filter((e) => dataLearnedWords?.findIndex((i) => i._id !== e.id) === -1);
-    // const filterDifficult = data.filter((e) => dataDifficultWords?.findIndex((i) => i._id !== e.id) === -1);
-    // // const filterNonLearned = data.filter((e) => dataLearnedWords?.findIndex((i) => i._id === e.id));
-    // const filterNonDifficult = data.filter((e) => dataDifficultWords?.findIndex((i) => i._id === e.id));
-    // console.log(filterLearned);
-    // console.log(learnedWords);
+
+    const allUserWords = await getUserWordsAll(myId);
+    const dataAllUserWords = allUserWords[0].paginatedResults;
+    dataAllUserWords?.forEach((word) =>{
+      console.log(word._id);
+    })
+
+    const oneWord = await getUserWord(myId, data[0].id);
+    console.log(oneWord);
+
+    const filterLearned = data.filter((e) => dataLearnedWords?.findIndex((i) => i._id !== e.id));
+    const filterDifficult = data.filter((e) => dataDifficultWords?.findIndex((i) => i._id !== e.id));
+    const filterNonLearned = data.filter((e) => dataLearnedWords?.findIndex((i) => i._id === e.id));
+    const filterNonDifficult = data.filter((e) => dataDifficultWords?.findIndex((i) => i._id === e.id));
+    //console.log(filterLearned);
+    //console.log(learnedWords);
 
     // filterDifficult.forEach((card) => {
-    //   const cardOnPage = new CardElement(card).renderCard();
-    //   if (cardsOnPage) cardsOnPage.appendChild(cardOnPage);
-    //   cardOnPage.classList.add('difficult-word');
-    //   return cardsOnPage;
-    // });
+      //   const cardOnPage = new CardElement(card).renderCard();
+      //   if (cardsOnPage) cardsOnPage.appendChild(cardOnPage);
+      //   cardOnPage.classList.add('difficult-word');
+      //   return cardsOnPage;
+      // });
+      
+      
+      filterLearned.forEach((card) => {
+      const cardOnPage = new CardElement(card).renderCard();
+      cardOnPage.classList.add('opacity');
+      if (cardsOnPage) cardsOnPage.appendChild(cardOnPage);
+      // return cardsOnPage;
+    });
 
-    // filterLearned.forEach((card) => {
-    //   const cardOnPage = new CardElement(card).renderCard();
-    //   if (cardsOnPage) cardsOnPage.appendChild(cardOnPage);
-    //   cardOnPage.classList.add('opacity');
-    //   return cardsOnPage;
-    // });
-    // filterNonDifficult.forEach((card) => {
+       // filterNonDifficult.forEach((card) => {
     //   const cardOnPage = new CardElement(card).renderCard();
     //   if (cardsOnPage) cardsOnPage.appendChild(cardOnPage);
     //   return cardsOnPage;
     // });
-  } else {
+ 
     data.forEach((element) => {
       const cardOnPage = new CardElement(element).renderCard();
       if (cardsOnPage) cardsOnPage.appendChild(cardOnPage);
     });
+  
   }
+  
   document.addEventListener('onload', async () => {
     if (getItemFromLocalStorage('currentPage')) {
       const currentPageUser = getItemFromLocalStorage('currentPage');
