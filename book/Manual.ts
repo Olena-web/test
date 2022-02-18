@@ -3,8 +3,8 @@ import { renderPage, createAside, Group } from './renderPage';
 import { currentPage } from './paginationBook';
 import { addModal, toggleTranslate, toggleButtons } from './settings';
 import { renderDifficultPage } from './difficultPage';
+import { renderGameFromBook } from '../game1/game1FromBook';
 import { getItemFromLocalStorage } from '../js/localStorage';
-
 
 export class Manual extends AbstractView {
   constructor() {
@@ -43,3 +43,16 @@ export class Manual extends AbstractView {
   }
 }
 export default Manual;
+
+/*function bookOrGame1() {
+      if (game1) {
+        app.innerText = '';
+        return renderGameFromBook();
+      }
+      return renderPage(Group, currentPage);
+    }
+
+    const game1 = document.getElementById('call');
+    game1?.addEventListener('click', bookOrGame1);
+
+    return bookOrGame1();*/

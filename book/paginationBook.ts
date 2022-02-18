@@ -5,19 +5,21 @@ const currentPageUser = getItemFromLocalStorage('currentPage');
 const userLevel = +currentPageUser.charAt(1);
 const userPage = +currentPageUser.charAt(3)
 
-export let currentPage = userPage || 0;
+export let currentPage = 0;
 export const firstPage = 0;
 export const totalPages = 30;
-export let currentGroup = userLevel || 0;
+export let currentGroup = 0;
 
 export async function changeLevel() {
   document.body.addEventListener('click', async (e: MouseEvent) => {
     const cardsOnPage = document.querySelector('.book-page');
     const level = document.querySelectorAll('.level');
     const myId: string = getItemFromLocalStorage('id');
+    const pagination = document.querySelector('.pagination');
 
     level.forEach((button) => {
       button.classList.remove('active-page');
+      pagination?.classList.remove('hide');
     });
     if (e.target) {
       if ((<HTMLButtonElement>e.target).classList.contains('level')) {
@@ -35,8 +37,8 @@ export async function changeLevel() {
           const cardOnPage = new CardElement(element).renderCard();
           const difficultBtn = document.querySelector('difficult');
           if (currentGroup === 6) {
-            console.log(currentGroup , difficultBtn)
-           if (difficultBtn) difficultBtn.classList.add('hide');
+           // console.log(currentGroup , difficultBtn)
+           if (difficultBtn) difficultBtn.remove()
           }
           if (cardsOnPage) cardsOnPage.appendChild(cardOnPage);
           cardsOnPage?.setAttribute('id', `${id}`);

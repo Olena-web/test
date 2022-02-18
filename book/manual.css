@@ -28,6 +28,7 @@
 	grid-template-columns: repeat(2, 1fr);
   row-gap: 3em;
 	align-items:center;
+  justify-items: center;
   justify-content: space-around;
 }
 .pagination {
@@ -59,9 +60,9 @@
 .levels {
   display: flex;
   position: fixed;
-  left: 40px;
+  left: 2em;
   flex-direction: column;
-  gap: 1.2em;
+  gap: 1em;
 }
 .level,
 .save,
@@ -116,11 +117,22 @@
 .incorrect {
   background-color: var(--card-level5);
 }
-.settings {
+.settings,
+.sprint-btn,
+.call-btn {
   border: none;
   outline: none;
   filter: alpha(opacity=100);
   background: transparent;
+}
+.sprint-btn {
+  width: 100px;
+}
+svg {
+  pointer-events: none;
+}
+.call-btn {
+  width: 77px;
 }
 .hide {
   visibility: none;
@@ -133,7 +145,7 @@
   border: 2px red dotted;
 }
 .pageup {
-  /* display: none; */
+  display: none;
   position: fixed;
   bottom: 118px;
   right: 32px;
@@ -144,4 +156,6 @@
 a.pageup:hover svg path {
   fill: var(--gold-color);
 }
-
+.userAudioCall {
+  width: 60px;
+}

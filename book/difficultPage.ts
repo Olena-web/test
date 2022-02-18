@@ -10,7 +10,6 @@ import { WORDS_PER_PAGE, NUMBER_DIFFERENT_GROUP } from '../js/constants';
 
 export const deletedCards: Array<string> = [];
 export const difficultWords: Array<string> = [];
-export const learnedWords: Array<string> = [];
 
 export const myId: string = getItemFromLocalStorage('id');
 const deleteBtn = document.querySelector<HTMLButtonElement>('delete');
@@ -18,9 +17,9 @@ const prevButton = document.querySelector<HTMLButtonElement>('prev');
 const nextButton = document.querySelector<HTMLButtonElement>('next');
 const counter = document.querySelector<HTMLDivElement>('.counter');
 const difficultGroup = NUMBER_DIFFERENT_GROUP;
-let ifDifficultGroup = true;
+const ifDifficultGroup = true;
 
-let currentDifficultPage = 0;
+const currentDifficultPage = 0;
 
 export function removeCard() {
   document.body.addEventListener('click', (e) => {
@@ -30,7 +29,7 @@ export function removeCard() {
         const cardToDelete = document.getElementById(`${id}`);
         deletedCards.push(id);
         setItemToLocalStorage('deletedCards', JSON.stringify(deletedCards));
-        if (cardToDelete) cardToDelete.remove();
+        // if (cardToDelete) cardToDelete.remove();
       }
     }
   });
@@ -51,7 +50,7 @@ export function difficultWord() {
         setItemToLocalStorage('difficultWords', JSON.stringify(difficultWords));
         const body: UserWordParameters = {
           difficulty: 'difficult-word',
-          optional: { testFieldString: 'test', testFieldBoolean: true },
+          // optional: {  },
         };
         await deleteUserWord(myId, wordId);
         await createUserWord(myId, wordId, body);
@@ -69,7 +68,7 @@ export async function removeDifficultWord() {
         await deleteUserWord(myId, id);
         if (ifDifficultGroup) {
           const cardToDelete = document.getElementById(`${id}`);
-          if (cardToDelete) cardToDelete.remove();
+          // if (cardToDelete) cardToDelete.remove();
         }
       }
     }
@@ -86,25 +85,34 @@ export async function renderDifficultPage() {
         if (cardsOnPage) cardsOnPage.innerHTML = '';
         const diffWordsId = await getUserDifficultWords(myId);
         const diffWords = diffWordsId[0].paginatedResults;
-        const count = diffWordsId[0].totalCount[0];
-        const numberWords = Object.values(Object.values(count))[0];
-        const totalDifficultPages = Math.round(numberWords / WORDS_PER_PAGE);
+        // const count = diffWordsId[0].totalCount[0];
+        // const numberWords = Object.values(Object.values(count))[0];
+        // const totalDifficultPages = Math.round(numberWords / WORDS_PER_PAGE);
+        pagination?.classList.toggle('hide');
 
         if (diffWords) {
           diffWords.forEach(async (item) => {
             const cardOnPage = new CardElement(item).renderCard();
+            const difficultBtn = document.querySelectorAll('difficult');
+            difficultBtn.forEach((btn) => {
+              console.log(btn);
+              (<HTMLButtonElement>btn).disabled = true;
+
+            })
             if (cardsOnPage) cardsOnPage.appendChild(cardOnPage);
-            const difficultBtn = document.querySelector<HTMLButtonElement>('difficult');
-            if (difficultBtn) difficultBtn.disabled = true;
           });
         }
-
+        const difficultBtn = document.querySelectorAll('difficult');
+        difficultBtn.forEach((btn) => {
+          btn.classList.add('hide');
+        });
         // async function nextDifficultPage() {
         //   if (currentDifficultPage < totalDifficultPages) {
         //     currentDifficultPage += 1;
         //     if (cardsOnPage) {
         //       cardsOnPage.innerHTML = '';
         //       localStorage.removeItem('currentPage');
+        // eslint-disable-next-line max-len
         //       setItemToLocalStorage('currentPage', JSON.stringify(`${difficultGroup}-${currentDifficultPage}`));
         //     }
         //     if (diffWords) {
@@ -152,28 +160,6 @@ export async function renderDifficultPage() {
     }
   });
 }
-export function learnedWord() {
-  document.body.addEventListener('click', async (e):Promise< void> => {
-    if (e.target) {
-      if ((<HTMLButtonElement>e.target).classList.contains('delete')) {
-        const wordId = (<HTMLButtonElement>e.target).id.split('delete')[1];
-        const word = document.getElementById(`${wordId}`);
-        console.log(wordId, word);
-        if (word) word.classList.add('learned-word');
-        (<HTMLButtonElement>e.target).disabled = true;
-        (<HTMLButtonElement>e.target).classList.add('opacity');
-        learnedWords.push(wordId);
-        setItemToLocalStorage('learnedWords', JSON.stringify(learnedWords));
-        const body: UserWordParameters = {
-          difficulty: 'learned-word',
-          optional: { testFieldString: 'test', testFieldBoolean: true },
-        };
-        removeDifficultWord();
-        await createUserWord(myId, wordId, body);
-      }
-    }
-  });
-}
 
 // function changeDifficultPages() {
 //   if (prevButton) {
@@ -202,5 +188,5 @@ export function learnedWord() {
 // }
 
 export default {
-  removeCard, difficultWord, renderDifficultPage, learnedWord,
+  removeCard, difficultWord, renderDifficultPage,
 };
